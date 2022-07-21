@@ -1,0 +1,23 @@
+{
+    "files.exclude":
+    {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": false,
+        "**/CVS": false,
+        "**/.DS_Store": false,
+        "**/Thumbs.db": false,
+        "**/*.meta": true,
+        "**/Library": true,
+        "**/Debug": false,
+        "**/Packages": false,
+        "**/ProjectSettings": false,
+        "**/UserSettings": false,
+        "**/bin": false,
+        "**/Temp": true,
+        "**/obj": false,
+        "**/Logs": false
+    },
+    "git.ignoreLimitWarning": true,
+    "commentTranslate.targetLanguage": "en"
+}
