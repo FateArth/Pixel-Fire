@@ -1,0 +1,20 @@
+{
+    "Id": "",
+    "Version": "v1.0.2",
+    "Type": 0,
+    "AccessRight": 0,
+    "DownloadUrl": "",
+    "InstallPath": "Assets/QFramework/Framework/",
+    "IncludeFileOrFolders": [
+        "Assets/QFramework/Framework",
+        "Assets/QFramework/Toolkits"
+    ],
+    "DocUrl": "https://liangxiegame.com",
+    "Readme": {
+        "version": "v1.0.2",
+        "content": "Roadmap 更新",
+        "author": "liangxie",
+        "date": "2022 年 07 月 28 日 19:19",
+        "PackageId": ""
+    }
+}
