@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : Actor
 {
+    [TextArea(1,3)]
+    public string[] a;
     private Vector2 mousePos;
     private Rigidbody2D playerRigidboy;
     private Animator animator;
