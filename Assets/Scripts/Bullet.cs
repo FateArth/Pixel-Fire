@@ -74,16 +74,16 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// 子弹2D刚体
     /// </summary>
-    private Rigidbody2D bulletRigidbody;
+    private Rigidbody2D _bulletRigidbody;
     /// <summary>
     /// 子弹击中时的爆炸
     /// </summary>
     [SerializeField, Tooltip("子弹击中的爆炸效果")]
-    private GameObject BulletEffect;
+    private GameObject bulletEffect;
 
     private void Awake()
     {
-        bulletRigidbody = GetComponent<Rigidbody2D>();
+        _bulletRigidbody = GetComponent<Rigidbody2D>();
     }
     /// <summary>
     /// 伤害计算
@@ -101,7 +101,7 @@ public class Bullet : MonoBehaviour
     /// <param name="direction">射击方向</param>
     public void SetDirection(Vector2 direction)
     {
-        bulletRigidbody.velocity = direction * speed;
+        _bulletRigidbody.velocity = direction * speed;
     }
     /// <summary>
     /// 子弹击中
@@ -112,7 +112,7 @@ public class Bullet : MonoBehaviour
         if (collision.tag != "Player")
         {
             //子弹击中特效
-            GameObject effect = ObjectPool.Instance.GetObject(BulletEffect);
+            GameObject effect = ObjectPool.Instance.GetObject(bulletEffect);
             effect.transform.position = transform.position;
 
             //把子弹加入池子

@@ -11,48 +11,48 @@ public class Monster : Actor
     /// <summary>
     /// 攻击速度
     /// </summary>
-    protected float attackSpeed;
+    private float _attackSpeed;
     /// <summary>
     /// 受伤闪动持续时间
     /// </summary>
-    private float hurtTime;
+    private float _hurtTime;
     /// <summary>
     /// 受伤闪动的计数器
     /// </summary>
-    private float hurtValue;
+    private float _hurtValue;
 
     // [SerializeField]
-    private Transform player;
-    private Animator animator;
-    private SpriteRenderer sr;
-    NavMeshAgent navMeshAgent;
+    private Transform _player;
+    private Animator _animator;
+    private SpriteRenderer _sr;
+    private NavMeshAgent _navMeshAgent;
 
     protected new float MoveSpeed
     {
         get => moveSpeed; set
         {
             moveSpeed = value;
-            navMeshAgent.speed = moveSpeed;
+            _navMeshAgent.speed = moveSpeed;
         }
     }
 
     protected void Awake()
     {
-        animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        sr = GetComponent<SpriteRenderer>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _sr = GetComponent<SpriteRenderer>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
     }
     protected void Start()
     {
 
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.updateUpAxis = false;
+        _navMeshAgent.updateRotation = false;
+        _navMeshAgent.updateUpAxis = false;
     }
     public void OnEnable()
     {
         Hp = MaxHp;
-        hurtTime = 0.1f;
+        _hurtTime = 0.1f;
         isAttack = false;
     }
     protected void Update()
@@ -67,14 +67,14 @@ public class Monster : Actor
     protected void Move()
     {
         //怪物跟随玩家
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction = _player.position - transform.position;
         //Debug.DrawRay(transform.position, direction, Color.green);
         direction.Normalize();
         // transform.Translate(direction * Time.deltaTime * monster.MoveSpeed, Space.World);
         //通过NavMeshPlus进行怪物AI寻路
-        navMeshAgent.SetDestination(player.position);
+        _navMeshAgent.SetDestination(_player.position);
 
-        if (player.position.x > transform.position.x)
+        if (_player.position.x > transform.position.x)
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         else
             transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
@@ -93,28 +93,28 @@ public class Monster : Actor
 
     protected void HurtShader()
     {
-        if (hurtValue <= 0)
-            sr.material.SetFloat("_FlashAmount", 0);
+        if (_hurtValue <= 0)
+            _sr.material.SetFloat("_FlashAmount", 0);
         else
-            hurtValue -= Time.deltaTime;
+            _hurtValue -= Time.deltaTime;
     }
     protected void Attack()
     {
         isAttack = true;
-        animator.SetTrigger("isAttack");
+        _animator.SetTrigger("isAttack");
         StartCoroutine(FinishAttack());
     }
 
     private IEnumerator FinishAttack()
     {
-        yield return new WaitForSeconds(attackSpeed);
+        yield return new WaitForSeconds(_attackSpeed);
         isAttack = false;
     }
     public override void Hurt(float damage)
     {
         base.Hurt(damage);
-        sr.material.SetFloat("_FlashAmount", 0.5f);
-        hurtValue = hurtTime;
+        _sr.material.SetFloat("_FlashAmount", 0.5f);
+        _hurtValue = _hurtTime;
     }
 
     public override void Death()

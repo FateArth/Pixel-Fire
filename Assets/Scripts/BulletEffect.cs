@@ -7,17 +7,17 @@ using UnityEngine;
 /// </summary>
 public class BulletEffect : MonoBehaviour
 {
-    private Animator effectAnimator;
-    private AnimatorStateInfo info;
+    private Animator _effectAnimator;
+    private AnimatorStateInfo _info;
     void Awake()
     {
-        effectAnimator=GetComponent<Animator>();
+        _effectAnimator=GetComponent<Animator>();
     }
 
     void Update()
     {
-        info = effectAnimator.GetCurrentAnimatorStateInfo(0);
-        if (info.normalizedTime >= 1)
+        _info = _effectAnimator.GetCurrentAnimatorStateInfo(0);
+        if (_info.normalizedTime >= 1)
         {
             ObjectPool.Instance.PushObject(gameObject);
         }

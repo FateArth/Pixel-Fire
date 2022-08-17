@@ -5,9 +5,10 @@ using UnityEngine;
 /// </summary>
 public class ObjectPool:Singleton<ObjectPool>
 {
-    private GameObject pool;
-    private Dictionary<string, Queue<GameObject>> objectPool = new Dictionary<string, Queue<GameObject>>();
+    private GameObject _pool;
+    private readonly Dictionary<string, Queue<GameObject>> _objectPool = new Dictionary<string, Queue<GameObject>>();
 
+    // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// 通过预制体获取到物体对象
     /// 如果对象池里有就返回此物体，否则创建一个放进对象池再返回
@@ -16,22 +17,21 @@ public class ObjectPool:Singleton<ObjectPool>
     /// <returns>物体对象</returns>
     public GameObject GetObject(GameObject prefab)
     {
-        GameObject _obj;
-        if (!objectPool.ContainsKey(prefab.name) || objectPool[prefab.name].Count == 0)
+        GameObject obj;
+        if (!_objectPool.ContainsKey(prefab.name) || _objectPool[prefab.name].Count == 0)
         {
-            _obj = GameObject.Instantiate(prefab);
-            PushObject(_obj);
             GameObject childPool = GameObject.Find(prefab.name + "Pool");
             if (!childPool)
             {
                 childPool = new GameObject(prefab.name + "Pool");
                 childPool.transform.SetParent(transform);
             }
-            _obj.transform.SetParent(childPool.transform);
+            obj = GameObject.Instantiate(prefab, childPool.transform, true);
+            PushObject(obj);
         }
-        _obj = objectPool[prefab.name].Dequeue();
-        _obj.SetActive(true);
-        return _obj;
+        obj = _objectPool[prefab.name].Dequeue();
+        obj.SetActive(true);
+        return obj;
     }
 
     /// <summary>
@@ -40,12 +40,12 @@ public class ObjectPool:Singleton<ObjectPool>
     /// <param name="prefab">预制体</param>
     public void PushObject(GameObject prefab)
     {
-        string _name = prefab.name.Replace("(Clone)", string.Empty);
-        if (!objectPool.ContainsKey(_name))
+        string str = prefab.name.Replace("(Clone)", string.Empty);
+        if (!_objectPool.ContainsKey(str))
         {
-            objectPool.Add(_name, new Queue<GameObject>());
+            _objectPool.Add(str, new Queue<GameObject>());
         }
-        objectPool[_name].Enqueue(prefab);
+        _objectPool[str].Enqueue(prefab);
         prefab.SetActive(false);
     }
 }
